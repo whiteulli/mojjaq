@@ -1,0 +1,1259 @@
+1.Circular Queue
+2.Deque
+3-implemention of linked list(based on value and position)
+4-implementation of stack using linked list(pop,push)
+5-implementation of double linked list
+6.Circular Linkedlist
+7-verify linked list as loop or not
+8-reverse a linked list
+9-BST
+10-AVL
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Circular queue 
+
+class CircularQueue:
+    def __init__(self, max_size):
+        self.queue = [None] * max_size
+        self.max_size = max_size
+        self.front = -1
+        self.rear = -1
+
+    def is_empty(self):
+        return self.front == -1
+
+    def is_full(self):
+        return (self.rear + 1) % self.max_size == self.front
+
+    def insert(self, element):
+        if self.is_full():
+            print("Queue is full! Cannot insert element.")
+            return
+        if self.is_empty():
+            self.front = 0
+        self.rear = (self.rear + 1) % self.max_size
+        self.queue[self.rear] = element
+        print(f"Inserted {element} into the queue.")
+
+    def delete(self):
+        if self.is_empty():
+            print("Queue is empty! Cannot delete element.")
+            return
+        deleted_element = self.queue[self.front]
+        if self.front == self.rear:
+            self.front = -1
+            self.rear = -1
+        else:
+            self.front = (self.front + 1) % self.max_size
+        print(f"Deleted {deleted_element} from the queue.")
+
+    def print_queue(self):
+        if self.is_empty():
+            print("Queue is empty!")
+            return
+        print("Queue elements:", end=" ")
+        i = self.front
+        while True:
+            print(self.queue[i], end=" ")
+            if i == self.rear:
+                break
+            i = (i + 1) % self.max_size
+        print()
+
+def main():
+    max_size = int(input("Enter the maximum size of the circular queue: "))
+    queue = CircularQueue(max_size)
+    
+    while True:
+        print("\n--- Circular Queue Operations ---")
+        print("1. Insert an element")
+        print("2. Delete an element")
+        print("3. Print queue")
+        print("4. Exit")
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            element = int(input("Enter the element to insert: "))
+            queue.insert(element)
+        elif choice == 2:
+            queue.delete()
+        elif choice == 3:
+            queue.print_queue()
+        elif choice == 4:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#dequeue
+
+class Deque:
+    def __init__(self, max_size):
+        self.queue = [None] * max_size
+        self.max_size = max_size
+        self.front = -1
+        self.rear = -1
+
+    def is_empty(self):
+        return self.front == -1
+
+    def is_full(self):
+        return (self.rear + 1) % self.max_size == self.front
+
+    def insert_front(self, element):
+        if self.is_full():
+            print("Deque is full! Cannot insert at the front.")
+            return
+        if self.is_empty():
+            self.front = 0
+            self.rear = 0
+        else:
+            self.front = (self.front - 1 + self.max_size) % self.max_size
+        self.queue[self.front] = element
+        print(f"Inserted {element} at the front.")
+
+    def insert_back(self, element):
+        if self.is_full():
+            print("Deque is full! Cannot insert at the back.")
+            return
+        if self.is_empty():
+            self.front = 0
+            self.rear = 0
+        else:
+            self.rear = (self.rear + 1) % self.max_size
+        self.queue[self.rear] = element
+        print(f"Inserted {element} at the back.")
+
+    def delete_front(self):
+        if self.is_empty():
+            print("Deque is empty! Cannot delete from the front.")
+            return
+        deleted_element = self.queue[self.front]
+        if self.front == self.rear:
+            self.front = -1
+            self.rear = -1
+        else:
+            self.front = (self.front + 1) % self.max_size
+        print(f"Deleted {deleted_element} from the front.")
+
+    def delete_back(self):
+        if self.is_empty():
+            print("Deque is empty! Cannot delete from the back.")
+            return
+        deleted_element = self.queue[self.rear]
+        if self.front == self.rear:
+            self.front = -1
+            self.rear = -1
+        else:
+            self.rear = (self.rear - 1 + self.max_size) % self.max_size
+        print(f"Deleted {deleted_element} from the back.")
+
+    def print_queue(self):
+        if self.is_empty():
+            print("Deque is empty!")
+            return
+        print("Deque elements:", end=" ")
+        i = self.front
+        while True:
+            print(self.queue[i], end=" ")
+            if i == self.rear:
+                break
+            i = (i + 1) % self.max_size
+        print()
+
+def main():
+    max_size = int(input("Enter the maximum size of the deque: "))
+    deque = Deque(max_size)
+    
+    while True:
+        print("\n--- Double-Ended Queue Operations ---")
+        print("1. Insert an element from front")
+        print("2. Insert an element from back")
+        print("3. Delete an element from front")
+        print("4. Delete an element from back")
+        print("5. Print queue")
+        print("6. Exit")
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            element = int(input("Enter the element to insert at the front: "))
+            deque.insert_front(element)
+        elif choice == 2:
+            element = int(input("Enter the element to insert at the back: "))
+            deque.insert_back(element)
+        elif choice == 3:
+            deque.delete_front()
+        elif choice == 4:
+            deque.delete_back()
+        elif choice == 5:
+            deque.print_queue()
+        elif choice == 6:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Linked List implementation (without stack) insert,delete based on position and value and printing
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # a. Create a linked list with initial data
+    def create_linked_list(self, data_list):
+        self.head = None
+        for data in data_list:
+            self.insert_at_end(data)
+        print("Linked list created with elements:", data_list)
+
+    # b. Insert an element based on position
+    def insert_at_position(self, data, position):
+        new_node = Node(data)
+        if position == 0:  # Insert at the head
+            new_node.next = self.head
+            self.head = new_node
+        else:
+            current = self.head
+            for _ in range(position - 1):
+                if current is None:
+                    print("Position out of bounds")
+                    return
+                current = current.next
+            if current is None:
+                print("Position out of bounds")
+                return
+            new_node.next = current.next
+            current.next = new_node
+        print(f"Inserted {data} at position {position}")
+
+    # c. Insert an element after a given value
+    def insert_after_value(self, data, value):
+        new_node = Node(data)
+        current = self.head
+        while current:
+            if current.data == value:
+                new_node.next = current.next
+                current.next = new_node
+                print(f"Inserted {data} after value {value}")
+                return
+            current = current.next
+        print("Value not found in the list")
+
+    # d. Delete an element based on position
+    def delete_at_position(self, position):
+        if self.head is None:
+            print("List is empty")
+            return
+
+        if position == 0:
+            self.head = self.head.next
+        else:
+            current = self.head
+            for _ in range(position - 1):
+                if current is None or current.next is None:
+                    print("Position out of bounds")
+                    return
+                current = current.next
+            if current.next is None:
+                print("Position out of bounds")
+                return
+            current.next = current.next.next
+        print(f"Deleted element at position {position}")
+
+    # e. Delete an element based on value
+    def delete_by_value(self, value):
+        if self.head is None:
+            print("List is empty")
+            return
+
+        if self.head.data == value:
+            self.head = self.head.next
+            print(f"Deleted element with value {value}")
+            return
+
+        current = self.head
+        while current.next:
+            if current.next.data == value:
+                current.next = current.next.next
+                print(f"Deleted element with value {value}")
+                return
+            current = current.next
+        print("Value not found in the list")
+
+    # f. Print linked list
+    def print_linked_list(self):
+        if self.head is None:
+            print("List is empty")
+        else:
+            current = self.head
+            print("Linked List:", end=" ")
+            while current:
+                print(current.data, end=" -> ")
+                current = current.next
+            print("None")
+
+    # Helper function to insert at the end (used in create_linked_list)
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+# Main function with menu-driven options
+def main():
+    ll = LinkedList()
+
+    while True:
+        print("\nMenu:")
+        print("1. Create a linked list")
+        print("2. Insert an element at a position")
+        print("3. Insert an element after a value")
+        print("4. Delete an element at a position")
+        print("5. Delete an element by value")
+        print("6. Print linked list")
+        print("7. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data_list = list(map(int, input("Enter elements separated by spaces: ").split()))
+            ll.create_linked_list(data_list)
+        elif choice == 2:
+            data = int(input("Enter the element to insert: "))
+            position = int(input("Enter the position to insert at: "))
+            ll.insert_at_position(data, position)
+        elif choice == 3:
+            data = int(input("Enter the element to insert: "))
+            value = int(input("Enter the value to insert after: "))
+            ll.insert_after_value(data, value)
+        elif choice == 4:
+            position = int(input("Enter the position to delete: "))
+            ll.delete_at_position(position)
+        elif choice == 5:
+            value = int(input("Enter the value to delete: "))
+            ll.delete_by_value(value)
+        elif choice == 6:
+            ll.print_linked_list()
+        elif choice == 7:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Linkedlist using Stack
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Stack:
+    def __init__(self):
+        self.top = None  # Top of the stack
+
+    # a. Push an element onto the stack
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top
+        self.top = new_node
+        print(f"Pushed {data} onto the stack")
+
+    # b. Pop an element from the stack
+    def pop(self):
+        if self.is_empty():
+            print("Stack is empty! Cannot perform pop.")
+            return None
+        popped_data = self.top.data
+        self.top = self.top.next
+        print(f"Popped {popped_data} from the stack")
+        return popped_data
+
+    # Helper function to check if the stack is empty
+    def is_empty(self):
+        return self.top is None
+
+    # c. Print stack from top to bottom
+    def print_stack(self):
+        if self.is_empty():
+            print("Stack is empty")
+        else:
+            print("Stack from top to bottom:")
+            current = self.top
+            while current:
+                print(current.data, end=" -> ")
+                current = current.next
+            print("None")
+
+# Main function with menu-driven options
+def main():
+    stack = Stack()
+
+    while True:
+        print("\nMenu:")
+        print("1. Push an element onto the stack")
+        print("2. Pop an element from the stack")
+        print("3. Print stack from top to bottom")
+        print("4. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data = int(input("Enter the element to push: "))
+            stack.push(data)
+        elif choice == 2:
+            stack.pop()
+        elif choice == 3:
+            stack.print_stack()
+        elif choice == 4:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Doubly linked list
+Class Node:
+    def __init__(self,date):
+	self.data = data
+	self.next = None
+	self.prev = None
+class Node:
+    def __init__(self,date):
+        self.data = data
+        self.next = None
+        self.prev = None
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    # a. Create a Doubly Linked List by appending a node at the end
+    def create(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            temp = self.head
+            while temp.next:
+                temp = temp.next
+            temp.next = new_node
+            new_node.prev = temp
+        print(f"Inserted {data} at the end of the list")
+
+    # b. Insert an element based on position (cover all cases)
+    def insert_at_position(self, data, position):
+        new_node = Node(data)
+        if position == 0:  # Insert at head
+            new_node.next = self.head
+            if self.head:
+                self.head.prev = new_node
+            self.head = new_node
+            print(f"Inserted {data} at position {position}")
+            return
+
+        temp = self.head
+        for _ in range(position - 1):
+            if not temp:
+                print("Position out of bounds!")
+                return
+            temp = temp.next
+
+        new_node.next = temp.next
+        if temp.next:
+            temp.next.prev = new_node
+        temp.next = new_node
+        new_node.prev = temp
+        print(f"Inserted {data} at position {position}")
+
+    # c. Insert an element after a specific value
+    def insert_after_value(self, data, value):
+        new_node = Node(data)
+        temp = self.head
+        while temp and temp.data != value:
+            temp = temp.next
+
+        if temp is None:
+            print(f"Value {value} not found in the list!")
+            return
+
+        new_node.next = temp.next
+        if temp.next:
+            temp.next.prev = new_node
+        temp.next = new_node
+        new_node.prev = temp
+        print(f"Inserted {data} after value {value}")
+
+    # d. Delete an element based on position (cover all cases)
+    def delete_at_position(self, position):
+        if not self.head:
+            print("List is empty!")
+            return
+
+        temp = self.head
+        if position == 0:  # Delete head node
+            self.head = temp.next
+            if self.head:
+                self.head.prev = None
+            print(f"Deleted node at position {position}")
+            return
+
+        for _ in range(position):
+            temp = temp.next
+            if not temp:
+                print("Position out of bounds!")
+                return
+
+        if temp.next:
+            temp.next.prev = temp.prev
+        if temp.prev:
+            temp.prev.next = temp.next
+        print(f"Deleted node at position {position}")
+
+    # e. Delete an element based on value
+    def delete_by_value(self, value):
+        temp = self.head
+        while temp and temp.data != value:
+            temp = temp.next
+
+        if temp is None:
+            print(f"Value {value} not found in the list!")
+            return
+
+        if temp.prev:
+            temp.prev.next = temp.next
+        if temp.next:
+            temp.next.prev = temp.prev
+        if temp == self.head:  # If the node to be deleted is the head node
+            self.head = temp.next
+        print(f"Deleted node with value {value}")
+
+    # f. Print the Doubly Linked List
+    def print_list(self):
+        if not self.head:
+            print("List is empty")
+            return
+
+        temp = self.head
+        print("Doubly Linked List:", end=" ")
+        while temp:
+            print(temp.data, end=" <-> ")
+            temp = temp.next
+        print("None")
+
+# Main function with menu-driven options
+def main():
+    dll = DoublyLinkedList()
+
+    while True:
+        print("\nMenu:")
+        print("1. Create a Doubly Linked List")
+        print("2. Insert an element based on position")
+        print("3. Insert an element based on value")
+        print("4. Delete an element based on position")
+        print("5. Delete an element based on value")
+        print("6. Print Doubly Linked List")
+        print("7. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data = int(input("Enter the element to insert at the end: "))
+            dll.create(data)
+        elif choice == 2:
+            data = int(input("Enter the element to insert: "))
+            position = int(input("Enter the position: "))
+            dll.insert_at_position(data, position)
+        elif choice == 3:
+            data = int(input("Enter the element to insert: "))
+            value = int(input("Enter the value after which to insert: "))
+            dll.insert_after_value(data, value)
+        elif choice == 4:
+            position = int(input("Enter the position of the element to delete: "))
+            dll.delete_at_position(position)
+        elif choice == 5:
+            value = int(input("Enter the value of the element to delete: "))
+            dll.delete_by_value(value)
+        elif choice == 6:
+            dll.print_list()
+        elif choice == 7:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#binary seach tree implementation,insertion and traversals
+
+class TreeNode:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    # a) Inserting a node
+    def insert(self, key):
+        if self.root is None:
+            self.root = TreeNode(key)
+        else:
+            self._insert_recursive(self.root, key)
+
+    def _insert_recursive(self, node, key):
+        if key < node.key:
+            if node.left is None:
+                node.left = TreeNode(key)
+            else:
+                self._insert_recursive(node.left, key)
+        elif key > node.key:
+            if node.right is None:
+                node.right = TreeNode(key)
+            else:
+                self._insert_recursive(node.right, key)
+
+    # b) Deleting a node
+    def delete(self, key):
+        self.root = self._delete_recursive(self.root, key)
+
+    def _delete_recursive(self, node, key):
+        if node is None:
+            return node
+        
+        # Find the node to delete
+        if key < node.key:
+            node.left = self._delete_recursive(node.left, key)
+        elif key > node.key:
+            node.right = self._delete_recursive(node.right, key)
+        else:
+            # Node with only one child or no child
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+
+            # Node with two children: Get the inorder successor (smallest in the right subtree)
+            temp = self._min_value_node(node.right)
+            node.key = temp.key
+            # Delete the inorder successor
+            node.right = self._delete_recursive(node.right, temp.key)
+
+        return node
+
+    def _min_value_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    # c) Printing In-order traversal
+    def inorder_traversal(self):
+        result = []
+        self._inorder_recursive(self.root, result)
+        return result
+
+    def _inorder_recursive(self, node, result):
+        if node:
+            self._inorder_recursive(node.left, result)
+            result.append(node.key)
+            self._inorder_recursive(node.right, result)
+
+    # d) Printing Pre-order traversal
+    def preorder_traversal(self):
+        result = []
+        self._preorder_recursive(self.root, result)
+        return result
+
+    def _preorder_recursive(self, node, result):
+        if node:
+            result.append(node.key)
+            self._preorder_recursive(node.left, result)
+            self._preorder_recursive(node.right, result)
+
+    # e) Printing Post-order traversal
+    def postorder_traversal(self):
+        result = []
+        self._postorder_recursive(self.root, result)
+        return result
+
+    def _postorder_recursive(self, node, result):
+        if node:
+            self._postorder_recursive(node.left, result)
+            self._postorder_recursive(node.right, result)
+            result.append(node.key)
+
+# Menu-driven main function
+def main():
+    bst = BinarySearchTree()
+
+    while True:
+        print("\nBinary Search Tree Operations Menu:")
+        print("1. Insert a node")
+        print("2. Delete a node")
+        print("3. In-order Traversal")
+        print("4. Pre-order Traversal")
+        print("5. Post-order Traversal")
+        print("6. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            key = int(input("Enter the value to insert: "))
+            bst.insert(key)
+            print(f"Inserted {key} into the tree.")
+        elif choice == 2:
+            key = int(input("Enter the value to delete: "))
+            bst.delete(key)
+            print(f"Deleted {key} from the tree.")
+        elif choice == 3:
+            print("In-order Traversal:", bst.inorder_traversal())
+        elif choice == 4:
+            print("Pre-order Traversal:", bst.preorder_traversal())
+        elif choice == 5:
+            print("Post-order Traversal:", bst.postorder_traversal())
+        elif choice == 6:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#avl tree
+class AVLTree:
+    def get_height(self, node):
+        return node.height if node else 0
+
+    def update_height(self, node):
+        if node:
+            node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
+
+    def get_balance(self, node):
+        if not node:
+            return 0
+        return self.get_height(node.left) - self.get_height(node.right)
+
+    def rotate_right(self, y):
+        x = y.left
+        T2 = x.right
+
+        # Perform rotation
+        x.right = y
+        y.left = T2
+
+        # Update heights
+        self.update_height(y)
+        self.update_height(x)
+
+        # Return new root
+        return x
+
+    def rotate_left(self, x):
+        y = x.right
+        T2 = y.left
+
+        # Perform rotation
+        y.left = x
+        x.right = T2
+
+        # Update heights
+        self.update_height(x)
+        self.update_height(y)
+
+        # Return new root
+        return y
+
+    # a) Inserting a node
+    def insert(self, node, key):
+        # Perform standard BST insert
+        if not node:
+            return AVLNode(key)
+        elif key < node.key:
+            node.left = self.insert(node.left, key)
+        else:
+            node.right = self.insert(node.right, key)
+
+        # Update the height of the ancestor node
+        self.update_height(node)
+
+        # Get the balance factor to check if this node became unbalanced
+        balance = self.get_balance(node)
+
+        # Balance the tree if necessary
+        # Case 1 - Left Left
+        if balance > 1 and key < node.left.key:
+            return self.rotate_right(node)
+
+        # Case 2 - Right Right
+        if balance < -1 and key > node.right.key:
+            return self.rotate_left(node)
+
+        # Case 3 - Left Right
+        if balance > 1 and key > node.left.key:
+            node.left = self.rotate_left(node.left)
+            return self.rotate_right(node)
+
+        # Case 4 - Right Left
+        if balance < -1 and key < node.right.key:
+            node.right = self.rotate_right(node.right)
+            return self.rotate_left(node)
+
+        # Return the unchanged node pointer
+        return node
+
+    # b) Printing In-order traversal
+    def inorder_traversal(self, node):
+        result = []
+        self._inorder_recursive(node, result)
+        return result
+
+    def _inorder_recursive(self, node, result):
+        if node:
+            self._inorder_recursive(node.left, result)
+            result.append(node.key)
+            self._inorder_recursive(node.right, result)
+
+# Menu-driven main function
+def main():
+    avl_tree = AVLTree()
+    root = None
+
+    while True:
+        print("\nAVL Tree Operations Menu:")
+        print("1. Insert a node")
+        print("2. Print In-order Traversal")
+        print("3. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            key = int(input("Enter the value to insert: "))
+            root = avl_tree.insert(root, key)
+            print(f"Inserted {key} into the AVL tree.")
+        elif choice == 2:
+            print("In-order Traversal:", avl_tree.inorder_traversal(root))
+        elif choice == 3:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Circular LinkedList
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class CircularSinglyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def create_list(self, data):
+        new_node = Node(data)
+        self.head = new_node
+        new_node.next = self.head
+        print(f"Created list with element {data}")
+
+    def insert_by_position(self, data, position):
+        new_node = Node(data)
+        if self.head is None:
+            if position == 0:
+                self.create_list(data)
+            else:
+                print("Invalid position! List is empty.")
+            return
+
+        if position == 0:  # Insert at the beginning
+            last = self.head
+            while last.next != self.head:
+                last = last.next
+            new_node.next = self.head
+            last.next = new_node
+            self.head = new_node
+            print(f"Inserted {data} at position {position}")
+            return
+
+        # Insert at other positions
+        current = self.head
+        index = 0
+        while index < position - 1 and current.next != self.head:
+            current = current.next
+            index += 1
+
+        if index == position - 1:
+            new_node.next = current.next
+            current.next = new_node
+            print(f"Inserted {data} at position {position}")
+        else:
+            print("Invalid position! Position is out of bounds.")
+
+    def insert_by_value(self, data, value):
+        new_node = Node(data)
+        if self.head is None:
+            print("List is empty!")
+            return
+
+        current = self.head
+        while current.data != value:
+            current = current.next
+            if current == self.head:
+                print(f"Value {value} not found in the list.")
+                return
+
+        new_node.next = current.next
+        current.next = new_node
+        print(f"Inserted {data} after value {value}")
+
+    def delete_by_position(self, position):
+        if self.head is None:
+            print("List is empty!")
+            return
+
+        if position == 0:  # Delete at the beginning
+            if self.head.next == self.head:
+                print(f"Deleted element {self.head.data} from position {position}")
+                self.head = None
+            else:
+                last = self.head
+                while last.next != self.head:
+                    last = last.next
+                print(f"Deleted element {self.head.data} from position {position}")
+                self.head = self.head.next
+                last.next = self.head
+            return
+
+        # Delete at other positions
+        current = self.head
+        index = 0
+        prev = None
+        while index < position and current.next != self.head:
+            prev = current
+            current = current.next
+            index += 1
+
+        if index == position:
+            prev.next = current.next
+            print(f"Deleted element {current.data} from position {position}")
+        else:
+            print("Invalid position! Position is out of bounds.")
+
+    def delete_by_value(self, value):
+        if self.head is None:
+            print("List is empty!")
+            return
+
+        current = self.head
+        prev = None
+
+        while current.data != value:
+            if current.next == self.head:
+                print(f"Value {value} not found in the list.")
+                return
+            prev = current
+            current = current.next
+
+        if current == self.head:  # Deleting the head node
+            if self.head.next == self.head:
+                self.head = None
+            else:
+                last = self.head
+                while last.next != self.head:
+                    last = last.next
+                last.next = self.head.next
+                self.head = self.head.next
+        else:
+            prev.next = current.next
+        print(f"Deleted element with value {value}")
+
+    def print_list(self):
+        if self.head is None:
+            print("List is empty!")
+            return
+
+        current = self.head
+        print("Circular Linked List elements:", end=" ")
+        while True:
+            print(current.data, end=" ")
+            current = current.next
+            if current == self.head:
+                break
+        print()
+
+def main():
+    cll = CircularSinglyLinkedList()
+
+    while True:
+        print("\n--- Circular Singly Linked List Operations ---")
+        print("1. Create a circular singly linked list")
+        print("2. Insert an element by position")
+        print("3. Insert an element by value")
+        print("4. Delete an element by position")
+        print("5. Delete an element by value")
+        print("6. Print circular singly linked list")
+        print("7. Exit")
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data = int(input("Enter the data for the node: "))
+            cll.create_list(data)
+        elif choice == 2:
+            data = int(input("Enter the data to insert: "))
+            position = int(input("Enter the position: "))
+            cll.insert_by_position(data, position)
+        elif choice == 3:
+            data = int(input("Enter the data to insert: "))
+            value = int(input("Enter the value after which to insert: "))
+            cll.insert_by_value(data, value)
+        elif choice == 4:
+            position = int(input("Enter the position of the element to delete: "))
+            cll.delete_by_position(position)
+        elif choice == 5:
+            value = int(input("Enter the value of the element to delete: "))
+            cll.delete_by_value(value)
+        elif choice == 6:
+            cll.print_list()
+        elif choice == 7:
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
+
+if __name__ == "__main__":
+    main()
+f
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#loop checker
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None  # Points to the next node in the list, None if it's the last node.
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Method to add a new node at the end of the linked list
+    def append(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        last_node = self.head
+        while last_node.next:
+            last_node = last_node.next
+        last_node.next = new_node
+
+    # Function to detect loop in the linked list
+    def has_cycle(self):
+        slow_pointer = self.head
+        fast_pointer = self.head
+
+        # Traverse the list with two pointers
+        while fast_pointer and fast_pointer.next:
+            slow_pointer = slow_pointer.next  # Move slow pointer by 1 step
+            fast_pointer = fast_pointer.next.next  # Move fast pointer by 2 steps
+
+            if slow_pointer == fast_pointer:  # If both pointers meet, there's a loop
+                return True
+
+        return False
+
+    # Helper function to create a loop in the linked list (for testing purposes)
+    def create_loop(self, position):
+        if position < 0:
+            return
+        loop_node = self.head
+        count = 0
+        while loop_node and count < position:
+            loop_node = loop_node.next
+            count += 1
+        if loop_node:
+            last_node = self.head
+            while last_node.next:
+                last_node = last_node.next
+            last_node.next = loop_node  # Create the loop by connecting last node to the loop node
+
+    # Helper function to display the linked list elements (non-cyclic, for debugging purposes)
+    def display(self):
+        nodes = []
+        current = self.head
+        while current:
+            nodes.append(current.data)
+            current = current.next
+        print("Linked List:", nodes)
+
+# Main function to drive the menu and interact with the linked list
+def main():
+    ll = LinkedList()
+    
+    while True:
+        print("\nMenu:")
+        print("1. Add a node to the linked list")
+        print("2. Check if the linked list contains a loop")
+        print("3. Create a loop in the linked list (for testing)")
+        print("4. Display the linked list")
+        print("5. Exit")
+        
+        try:
+            choice = int(input("Enter your choice (1-5): "))
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 5.")
+            continue
+        
+        if choice == 1:
+            # Add a node to the linked list
+            data = int(input("Enter data for the new node: "))
+            ll.append(data)
+            print(f"Node with data {data} added to the linked list.")
+        
+        elif choice == 2:
+            # Check for loop in the linked list
+            if ll.has_cycle():
+                print("The linked list contains a loop.")
+            else:
+                print("The linked list does not contain a loop.")
+        
+        elif choice == 3:
+            # Create a loop in the linked list (for testing purposes)
+            position = int(input("Enter the position at which to create the loop (0-based index): "))
+            ll.create_loop(position)
+            print(f"Loop created at position {position}.")
+        
+        elif choice == 4:
+            # Display the linked list (only for debugging purposes, will show a limited number of nodes if there's a loop)
+            ll.display()
+        
+        elif choice == 5:
+            # Exit the program
+            print("Exiting the program...")
+            break
+        
+        else:
+            print("Invalid choice! Please choose a valid option (1-5).")
+
+if __name__ == "__main__":
+    main()
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#reverse a linked list
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None  # Points to the next node in the list, None if it's the last node.
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Method to add a new node at the end of the linked list
+    def append(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        last_node = self.head
+        while last_node.next:
+            last_node = last_node.next
+        last_node.next = new_node
+
+    # Function to print the linked list in reverse order using a stack
+    def print_reverse(self):
+        stack = []
+        current = self.head
+        
+        # Traverse the list and push the node data onto the stack
+        while current:
+            stack.append(current.data)
+            current = current.next
+        
+        # Pop from the stack to print the data in reverse order
+        if not stack:
+            print("The linked list is empty.")
+        else:
+            print("Linked List in Reverse Order:")
+            while stack:
+                print(stack.pop())
+
+    # Function to display the linked list
+    def display(self):
+        if not self.head:
+            print("The linked list is empty.")
+            return
+        current = self.head
+        print("Linked List:", end=" ")
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")  # End of list
+
+# Menu-driven function to interact with the user
+def main():
+    ll = LinkedList()
+
+    while True:
+        print("\nMenu:")
+        print("1. Add a node to the linked list")
+        print("2. Print the linked list in reverse (Using Stack)")
+        print("3. Display the linked list")
+        print("4. Exit")
+        
+        try:
+            choice = int(input("Enter your choice (1-4): "))
+        except ValueError:
+            print("Invalid input! Please enter a number between 1 and 4.")
+            continue
+        
+        if choice == 1:
+            # Add a node to the linked list
+            data = int(input("Enter data for the new node: "))
+            ll.append(data)
+            print(f"Node with data {data} added to the linked list.")
+        
+        elif choice == 2:
+            # Print the linked list in reverse using a stack
+            ll.print_reverse()
+        
+        elif choice == 3:
+            # Display the linked list
+            ll.display()
+        
+        elif choice == 4:
+            # Exit the program
+            print("Exiting the program...")
+            break
+        
+        else:
+            print("Invalid choice! Please choose a valid option (1-4).")
+
+if __name__ == "__main__":
+    main()
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
